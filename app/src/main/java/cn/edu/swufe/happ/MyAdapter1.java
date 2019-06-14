@@ -1,6 +1,7 @@
 package cn.edu.swufe.happ;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,14 +13,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MyAdapter1 extends ArrayAdapter {
-    private static final String TAG ="MyAdapter";
-    public MyAdapter1(Context context,
-                     int resource,
-                     ArrayList<HashMap<String,String>> list){
+    private static final String TAG ="MyAdapter1";
+    public MyAdapter1(Context context, int resource, ArrayList<HashMap<String,String>> list){
         super(context,resource,list);
     }
-
-    // @Override
+    @NonNull
+    //@Override
     public View getView(int position, View convertView, View parent){
         View itemView=convertView;
         if(itemView==null){
