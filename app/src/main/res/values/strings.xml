@@ -2,7 +2,7 @@
     <string name="app_name">Happ</string>
     <string name="add_title">新的备忘录</string>
     <string name="add_put">请输入内容</string>
-    <string name="add_save_text" >保存</string>
+    <string name="add_save_text">保存</string>
     <string name="list_title_text">My Notes</string>
     <string name="decision_title">Yes Or No</string>
     <string name="decision_add">添加选项</string>
