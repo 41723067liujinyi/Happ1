@@ -1,6 +1,9 @@
 package cn.edu.swufe.happ;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,23 +26,27 @@ public class NoteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list1);
+//获取sp里保存的数据
+        //SharedPreferences sharedPreferences = getSharedPreferences("my_notes",
+                                                          //Activity.MODE_PRIVATE);
+        //sharedPreferences.get;
 
-        Intent intent = getIntent();
-        String add_note = intent.getStringExtra("putin_note");
-        note1 = (TextView)findViewById(R.id.list_text);
-        //note2 = (ListView) findViewById(R.id.list_view);
-        note1.setText(add_note);
-       // note2.put(add_note);
-        Log.i(TAG,"onCreate:add_note+"+ add_note);
-
-
-        ListView listView =(ListView)findViewById(R.id.list_view);
-        //String data[] = {"1","2","3"};
-        List<String> list1= new ArrayList<String>();
-        list1.add(add_note);
-        ListAdapter adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1,list1);
-        listView.setAdapter(adapter);
+//        Intent intent = getIntent();
+//        String add_note = intent.getStringExtra("putin_note");
+//        note1 = (TextView)findViewById(R.id.list_text);
+//        //note2 = (ListView) findViewById(R.id.list_view);
+//        note1.setText(add_note);
+//       // note2.put(add_note);
+//        Log.i(TAG,"onCreate:add_note+"+ add_note);
+//
+//
+//        ListView listView =(ListView)findViewById(R.id.list_view);
+//        //String data[] = {"1","2","3"};
+//        List<String> list1= new ArrayList<String>();
+//        list1.add(add_note);
+//        ListAdapter adapter = new ArrayAdapter<String>(this,
+//                android.R.layout.simple_list_item_1,list1);
+//        listView.setAdapter(adapter);
 
     }
 
@@ -54,9 +61,32 @@ public class NoteActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId()==R.id.menu_add){
             Intent add1=new Intent(this,AddActivity.class);
-            startActivity(add1);
+            startActivityForResult(add1,1);
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode==1 && resultCode==2){
+            String add_note =data.getStringExtra("putin_note");
+
+            ListView listView =(ListView)findViewById(R.id.list_view);
+            //String data[] = {"1","2","3"};
+            List<String> list1= new ArrayList<String>();
+            list1.add(add_note);
+            ListAdapter adapter = new ArrayAdapter<String>(this,
+                    android.R.layout.simple_list_item_1,list1);
+            listView.setAdapter(adapter);
+
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+
+
+
+
+
 }
