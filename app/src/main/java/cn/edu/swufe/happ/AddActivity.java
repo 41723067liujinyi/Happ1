@@ -55,7 +55,7 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
     @Override
     public void onClick(View v) {
         Intent notes=new Intent(this,NoteActivity.class);
-
+         //传数据过去
         note = findViewById(R.id.add_putin);
         String str = note.getText().toString();
 
