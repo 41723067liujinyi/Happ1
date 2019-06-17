@@ -1,6 +1,7 @@
 package cn.edu.swufe.happ;
 
 import android.app.Activity;
+import android.app.ListActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
@@ -9,6 +10,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -18,15 +21,45 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class NoteActivity extends AppCompatActivity {
+import static android.content.ContentValues.TAG;
+
+public class NoteActivity extends AppCompatActivity  {
      public final String TAG = "NoteActivity";
      TextView note1;
      //ListView note2;
+     private String logData = "";
+     //private final String DATE_SP_KEY = "lastRateDataStr";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list1);
+        ListView listView =(ListView)findViewById(R.id.list_view);
+
+        SharedPreferences sharedPreferences= getSharedPreferences("mynote", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        String list_note1 =sharedPreferences.getString("note1","");
+
+//        dollarRate= sharedPreferences.getFloat("dollar_rate",0.0f);
+//        euroRate= sharedPreferences.getFloat("euro_rate",0.0f);
+//        wonRate= sharedPreferences.getFloat("won_rate",0.0f);
+//        updateDate=sharedPreferences.getString("update_date","");
+        List<String> list1= new ArrayList<String>();
+        list1.add(list_note1);
+
+        ListAdapter adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1,list1);
+        listView.setAdapter(adapter);
+
+
+//        List<String>retList = new ArrayList<>();
+//        NoteManager manager = new NoteManager(this);
+//        for(NoteItem  item : manager.listAll() ){
+//            retList.add(item.getCurNote());
+//        }
+
+
 //获取sp里保存的数据
         //SharedPreferences sharedPreferences = getSharedPreferences("my_notes",
                                                           //Activity.MODE_PRIVATE);
@@ -95,9 +128,22 @@ public class NoteActivity extends AppCompatActivity {
         //String data[] = {"1","2","3"};
         List<String> list1= new ArrayList<String>();
         list1.add(add_note);
-        ListAdapter adapter = new ArrayAdapter<String>(this,
+//
+//        List<NoteItem>noteList = new ArrayList<NoteItem>();
+//        noteList.add(new NoteItem(add_note));
+//        NoteManager manager = new NoteManager(this);
+//        manager.addAll(noteList);
+//
+
+            ListAdapter adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1,list1);
         listView.setAdapter(adapter);
+
+            SharedPreferences sharedPreferences= getSharedPreferences("mynote",Activity.MODE_PRIVATE);
+            SharedPreferences.Editor editor= sharedPreferences.edit();
+            editor.putString("note1",add_note);
+            editor.commit();
+            Log.i(TAG,"onActivityResult:数据已经保存到sharePreferences");
 
 
 //自定义适配器
@@ -119,7 +165,21 @@ public class NoteActivity extends AppCompatActivity {
 
 
 
+    public void onItemClick(AdapterView<?> parent, View view,
+                            int position, long id) {
+        ListView listView =(ListView)findViewById(R.id.list_view);
+        Object itemAtPosition = listView.getItemAtPosition(position);
+        List<String> list1= (ArrayList<String>)itemAtPosition;
 
+        TextView note = (TextView) view.findViewById(android.R.id.text1);
+        String note2 = String.valueOf(note.getText());
+
+        //打开新的页面，传入参数
+
+        Intent noteEdit =new Intent(this,EditActivity.class);
+        noteEdit.putExtra("note",note2);
+        startActivity(noteEdit);
+    }
 
 
 }

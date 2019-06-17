@@ -27,6 +27,19 @@ public class NoteManager {
         db.close();
     }
 
+    public void addAll(List<NoteItem> list){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        for (NoteItem item : list) {
+            ContentValues values = new ContentValues();
+            values.put("curnote", item.getCurNote());
+
+            db.insert(TBNAME, null, values);
+        }
+        db.close();
+    }
+
+
+
     public List<NoteItem> listAll(){
         List<NoteItem>noteList =null;//定义返回数据
         SQLiteDatabase db = dbHelper.getReadableDatabase();//获得数据库的访问

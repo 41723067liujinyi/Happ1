@@ -8,4 +8,5 @@
     <string name="decision_add">添加选项</string>
     <string name="decision_start">开始</string>
     <string name="menu_add_title">新增备忘录</string>
+    <string name="edit_text">编辑备忘录</string>
 </resources>
