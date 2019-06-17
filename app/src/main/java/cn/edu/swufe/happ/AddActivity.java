@@ -58,10 +58,19 @@ public class AddActivity extends AppCompatActivity implements View.OnClickListen
          //写新的，然后保存，传数据过去
         note = findViewById(R.id.add_putin);
         String str = note.getText().toString();
+
+//        //获取当前系统时间
+//        Date today = Calendar.getInstance().getTime();
+//        //转换为字符串类型
+//        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm");
+//        final String todayStr=sdf.format(today);
         Intent intent = getIntent();
         Bundle bd1 = new Bundle();
         bd1.putString("putin_note",str);
+       // bd1.putString("putin_time",todayStr);
+      //  intent.putExtras(bd1);
         intent.putExtra("putin_note",str);
+        //intent.putExtra("putin_time",todayStr);
         setResult(2,intent);
         finish();
 

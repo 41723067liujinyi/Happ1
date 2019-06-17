@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class NoteActivity extends AppCompatActivity {
@@ -60,8 +61,25 @@ public class NoteActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId()==R.id.menu_add){
+            //打开列表窗口
             Intent add1=new Intent(this,AddActivity.class);
             startActivityForResult(add1,1);
+
+
+
+            //测试数据库
+//            NoteItem item1 = new NoteItem("123456");
+//            NoteManager manager = new NoteManager(this);
+//            manager.add(item1);
+//            manager.add(new NoteItem("09876"));
+//            Log.i(TAG,"onOPtionsItemSelected:写入数据完毕");
+//
+//            //查询所有数据
+//            List<NoteItem> testList = manager.listAll();
+//            for(NoteItem i : testList ){
+//                Log.i(TAG,"onOPtionsItemSelected:取出数据完毕"+ i.getCurNote());
+//            }
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -71,14 +89,29 @@ public class NoteActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode==1 && resultCode==2){
             String add_note =data.getStringExtra("putin_note");
+            //String add_time =data.getStringExtra("putin_time");
 
-            ListView listView =(ListView)findViewById(R.id.list_view);
-            //String data[] = {"1","2","3"};
-            List<String> list1= new ArrayList<String>();
-            list1.add(add_note);
-            ListAdapter adapter = new ArrayAdapter<String>(this,
-                    android.R.layout.simple_list_item_1,list1);
-            listView.setAdapter(adapter);
+         ListView listView =(ListView)findViewById(R.id.list_view);
+        //String data[] = {"1","2","3"};
+        List<String> list1= new ArrayList<String>();
+        list1.add(add_note);
+        ListAdapter adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1,list1);
+        listView.setAdapter(adapter);
+
+
+//自定义适配器
+//            ListView listView =(ListView)findViewById(R.id.list_view);
+//            ArrayList<HashMap<String,String>> optionListItems = new ArrayList<HashMap<String,String>>();
+//            HashMap<String,String> map = new HashMap<String,String>();
+//            map.put("ItemTitle",add_note);
+//            //map.put("ItemDetail",add_time);
+//            //map.put("ItemDetail","12");
+//            optionListItems.add(map);
+//
+//            MyAdapter1 myAdapter1= new MyAdapter1(this,R.layout.list_item,optionListItems);
+//            listView.setAdapter(myAdapter1);
+
 
         }
         super.onActivityResult(requestCode, resultCode, data);

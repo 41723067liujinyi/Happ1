@@ -22,15 +22,17 @@ public class MyAdapter1 extends ArrayAdapter {
     public View getView(int position, View convertView, View parent){
         View itemView=convertView;
         if(itemView==null){
-            itemView= (View) LayoutInflater.from(getContext()).inflate(R.layout.list_item , (ViewGroup) parent, false);
+            itemView= (View) LayoutInflater.from(getContext()).inflate(R.layout.list_item ,
+                    (ViewGroup) parent, false);
         }
         Map<String,String> map=(Map<String,String>)getItem(position);
         TextView title =(TextView)itemView.findViewById(R.id.itemTitle);
         TextView detail =(TextView)itemView.findViewById(R.id.itemDetail);
 
-        title.setText("Title:"+map.get("ItemTitle"));
-        detail.setText("detail:"+map.get("ItemDetail"));
+        title.setText(map.get("ItemTitle"));
+        detail.setText(map.get("ItemDetail"));
 
         return itemView;
     }
+
 }
