@@ -1,7 +1,9 @@
 package cn.edu.swufe.happ;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
@@ -11,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
@@ -23,34 +26,39 @@ import java.util.List;
 
 import static android.content.ContentValues.TAG;
 
-public class NoteActivity extends AppCompatActivity  {
+public class NoteActivity extends AppCompatActivity  implements AdapterView.OnItemClickListener,AdapterView.OnItemLongClickListener{
      public final String TAG = "NoteActivity";
      TextView note1;
      //ListView note2;
      private String logData = "";
      //private final String DATE_SP_KEY = "lastRateDataStr";
-
+     List<String>data= new ArrayList<String>();
+     List<String> list1;
+      ListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list1);
+        initListView();
         ListView listView =(ListView)findViewById(R.id.list_view);
+        //listView.setOnItemClickListener(this);
+       // listView.setOnItemLongClickListener(this);
+        //listView.setEmptyView(findViewById(R.id.nodata));
+
 
         SharedPreferences sharedPreferences= getSharedPreferences("mynote", Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         String list_note1 =sharedPreferences.getString("note1","");
 
-//        dollarRate= sharedPreferences.getFloat("dollar_rate",0.0f);
-//        euroRate= sharedPreferences.getFloat("euro_rate",0.0f);
-//        wonRate= sharedPreferences.getFloat("won_rate",0.0f);
-//        updateDate=sharedPreferences.getString("update_date","");
+
         List<String> list1= new ArrayList<String>();
         list1.add(list_note1);
 
         ListAdapter adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1,list1);
         listView.setAdapter(adapter);
+
 
 
 //        List<String>retList = new ArrayList<>();
@@ -83,6 +91,16 @@ public class NoteActivity extends AppCompatActivity  {
 //        listView.setAdapter(adapter);
 
     }
+
+    private void initListView(){
+        ListView listView =(ListView)findViewById(R.id.list_view);
+        listView.setOnItemClickListener(this);
+        listView.setOnItemLongClickListener(this);
+        listView.setEmptyView(findViewById(R.id.nodata));
+
+    }
+
+
 
 //应用菜单的方法
     @Override
@@ -126,6 +144,8 @@ public class NoteActivity extends AppCompatActivity  {
 
          ListView listView =(ListView)findViewById(R.id.list_view);
         //String data[] = {"1","2","3"};
+
+
         List<String> list1= new ArrayList<String>();
         list1.add(add_note);
 //
@@ -159,12 +179,31 @@ public class NoteActivity extends AppCompatActivity  {
 //            listView.setAdapter(myAdapter1);
 
 
+        }else if(requestCode==3 && resultCode==4){
+            String new_note =data.getStringExtra("new_note");
+            //String add_time =data.getStringExtra("putin_time");
+            ListView listView =(ListView)findViewById(R.id.list_view);
+            List<String> list1= new ArrayList<String>();
+            list1.add(new_note);
+
+            ListAdapter adapter = new ArrayAdapter<String>(this,
+                    android.R.layout.simple_list_item_1,list1);
+            listView.setAdapter(adapter);
+
+            SharedPreferences sharedPreferences= getSharedPreferences("mynote",Activity.MODE_PRIVATE);
+            SharedPreferences.Editor editor= sharedPreferences.edit();
+            editor.putString("note1",new_note);
+            editor.commit();
+            Log.i(TAG,"onActivityResult:数据已经保存到sharePreferences");
+
+
         }
+
         super.onActivityResult(requestCode, resultCode, data);
     }
 
 
-
+    @Override
     public void onItemClick(AdapterView<?> parent, View view,
                             int position, long id) {
         ListView listView =(ListView)findViewById(R.id.list_view);
@@ -177,9 +216,34 @@ public class NoteActivity extends AppCompatActivity  {
         //打开新的页面，传入参数
 
         Intent noteEdit =new Intent(this,EditActivity.class);
-        noteEdit.putExtra("note",note2);
-        startActivity(noteEdit);
+        noteEdit.putExtra("edit_note",note2);
+        startActivityForResult(noteEdit,3) ;
     }
+
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+//        ListView listView =(ListView)findViewById(R.id.list_view);
+//        Object itemAtPosition = listView.getItemAtPosition(position);
+//        final List<String> list1= (ArrayList<String>)itemAtPosition;
+
+
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        builder.setTitle("提示").setMessage("确认要删除该备忘录吗？").setPositiveButton("是", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {  //which表示激活事件的是哪一个
+                //Log.i(TAG, "onClick: 对话框事件处理 ");
+              //list1.remove(position);//引入final
+                //adapter.notifyDataSetChanged();
+            }
+        })
+                .setNegativeButton("否",null);
+        builder.create().show();
+       //Log.i(TAG, "onItemLongClick: size"+ listItems.size());
+        return true;//true 短按事件不执行，f短按事件执行
+    }
+
+
 
 
 }

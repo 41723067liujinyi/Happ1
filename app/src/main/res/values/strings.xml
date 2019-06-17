@@ -9,4 +9,5 @@
     <string name="decision_start">开始</string>
     <string name="menu_add_title">新增备忘录</string>
     <string name="edit_text">编辑备忘录</string>
+    <string name="caozuotishi">轻触编辑——长按删除</string>
 </resources>
